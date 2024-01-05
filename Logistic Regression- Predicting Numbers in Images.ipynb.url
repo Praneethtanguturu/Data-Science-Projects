@@ -1,6 +1,57 @@
-[InternetShortcut]
-URL=http://localhost:8888/notebooks/Documents/Jupiter%20Notebook/Logistic%20Regression-%20Predicting%20Numbers%20in%20Images.ipynb
-IDList=
-HotKey=0
-IconFile=C:\Users\Dell\AppData\Local\Mozilla\Firefox\Profiles\ln2r77u0.default-release\shortcutCache\fXFlhIACs6YzT4DtpZkqRQ==.ico
-IconIndex=0
+#importing libraries and their associating methods
+
+from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+%matplotlib inline
+digits=load_digits()
+
+
+#determining the total number of images and labels
+
+print("image data shape ",digits.data.shape)
+print("label data shape ",digits.target.shape)
+
+#displaying some of images and labels
+
+plt.figure(figsize=(20,4))
+for index,(image,label) in enumerate(zip(digits.data[0:7],digits.target[0:7])):
+      plt.subplot(1,7,index+1)
+      plt.imshow(np.reshape(image,(8,8)),cmap=plt.cm.gray)
+      plt.title("Training: %d\n"%label,fontsize=20)
+
+
+#dividing dataset into training and test set
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(digits.data,digits.target,test_size=0.23,random_state=20)
+
+print(x_train.shape)
+print(y_train.shape)
+print(x_test.shape)
+print(y_test.shape)
+
+#import logistic regression model
+
+from sklearn.linear_model import LogisticRegression
+
+#making an instance of the model and training it
+
+logistic_reg=LogisticRegression()
+logistic_reg.fit(x_train,y_train)
+
+#predicting for the entire data set
+
+predictions=logistic_reg.predict(x_test)
+
+
+#determining the accuracy of the model
+
+score=logistic_reg.score(x_test,y_test)
+print(score)
+
+from sklearn.metrics import r2_score
+
+r2_score(y_test,predictions)
